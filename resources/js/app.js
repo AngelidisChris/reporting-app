@@ -30,3 +30,25 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 const app = new Vue({
     el: '#app',
 });
+
+// make table rows clickable at tickets.index
+$(function () {
+
+    $(".js-table").on("click", "tr[data-url]", function () {
+        window.location = $(this).data("url");
+    });
+
+});
+
+$(document).ready(function () {
+
+    setTimeout(function() {
+        $('.message').hide("slow");
+    }, 3000);
+});
+
+$(document).ready(function() {
+    $(document).on('submit', 'form', function() {
+        $('button').attr('disabled', 'disabled');
+    });
+});

@@ -11100,3 +11100,43 @@ a.text-dark:focus {
   }
 }
 
+.table-tr:hover {
+  cursor: pointer;
+}
+
+.status-level-0 {
+  background-color: #d3d3d3;
+}
+
+.status-level-1 {
+  background-color: #adbce6;
+}
+
+.status-level-2 {
+  background-color: #f0dc82;
+}
+
+.status-level-3 {
+  background-color: #ffbf00;
+}
+
+.status-level-4 {
+  background-color: #66ff00;
+}
+
+.priority-level-0 {
+  background-color: #d3d3d3;
+}
+
+.priority-level-1 {
+  background-color: #add8e6;
+}
+
+.priority-level-2 {
+  background-color: #ffbf00;
+}
+
+.priority-level-3 {
+  background-color: #ff6666;
+}
+
