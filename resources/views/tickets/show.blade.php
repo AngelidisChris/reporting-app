@@ -29,11 +29,11 @@
             <span>Added by
                 <a href="#">
                     {{ $ticket->user->name }}
-                    {{ \Carbon\Carbon::parse($ticket->created_at)->diffForHumans() }}.
+                    {{ $ticket->created_at->diffForHumans() }}.
                 </a>
                 Updated
                 <a href="#">
-                {{ \Carbon\Carbon::parse($ticket->updated_at)->diffForHumans() }}.
+                {{ ($ticket->updated_at)->diffForHumans() }}.
                 </a>
             </span>
         </div>
@@ -45,7 +45,7 @@
                     <dd class="col-3">{{ $ticket->status }}</dd>
 
                     <dt class="col-2">Start Date:</dt>
-                    <dd class="col-3">{{ \Carbon\Carbon::parse($ticket->updated_at)->format('d/M/Y') }}</dd>
+                    <dd class="col-3">{{ ($ticket->created_at)->format('d/M/Y') }}</dd>
                 </div>
                 <div class="row col-12">
                     <dt class="col-2">Priority:</dt>

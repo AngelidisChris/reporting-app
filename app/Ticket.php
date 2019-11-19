@@ -2,10 +2,39 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Kyslik\ColumnSortable\Sortable;
+
 
 class Ticket extends Model
 {
+
+    use Sortable;
+
+    public $sortable = ['id','title','body', 'status','priority','created_at', 'due_date', 'tracker'];
+
+
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'due_date'
+    ];
+
+    public function setDueDateAttribute($due_date)
+    {
+        $this->attributes['due_date'] = Carbon::parse($due_date);
+    }
+
+    public function setCreatedAtAttribute($created_at)
+    {
+        $this->attributes['created_at'] = Carbon::parse($created_at);
+    }
+
+    public function setUpdatedAtAttribute($updated_at)
+    {
+        $this->attributes['updated_at'] = Carbon::parse($updated_at);
+    }
 
     protected $attributes = [
         'status' => 3,

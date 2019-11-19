@@ -21,15 +21,15 @@
                 <table class="table js-table table-hover">
                     <thead>
                     <tr>
-                        <th>#ID</th>
-                        <th>Issuer</th>
-                        <th>Title</th>
-                        <th>Subject</th>
-                        <th>Created</th>
-                        <th>Status</th>
-                        <th>Priority</th>
-                        <th>Due Date</th>
-                        <th>Tracker</th>
+                        <th>@sortablelink('id')</th>
+                        <th>@sortablelink('user_id', 'issuer')</th>
+                        <th>@sortablelink('title')</th>
+                        <th>@sortablelink('body', 'Subject')</th>
+                        <th>@sortablelink('created_at', 'Created')</th>
+                        <th>@sortablelink('status')</th>
+                        <th>@sortablelink('priority')</th>
+                        <th>@sortablelink('due_date', 'Due Date')</th>
+                        <th>@sortablelink('tracker')</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -39,10 +39,10 @@
                                 <td>{{ $ticket->user->name }}</td>
                                 <td>{{ str_limit($ticket->title, 30) }}</td>
                                 <td> <span title="{{$ticket->body}}">{{ str_limit($ticket->body, 30) }}</span></td>
-                                <td >{{ \Carbon\Carbon::parse($ticket->created_at)->format('M d') }}</td>
+                                <td >{{ ($ticket->created_at)->format('d M Y') }}</td>
                                 <td><span class="box px-2 py-1 font-weight-bold rounded status-level-{{ $ticket->getOriginal('status') }}">{{ $ticket->status }}</span></td>
                                 <td><span class="box px-2 py-1 font-weight-bold rounded priority-level-{{ $ticket->getOriginal('priority') }}">{{ $ticket->priority }}</span></td>
-                                <td>{{ ($ticket->due_date) ? (\Carbon\Carbon::parse($ticket->due_date)->format('d-M-Y')) : '-' }}</td>
+                                <td >{{ ($ticket->due_date)->format('d M Y') }}</td>
                                 <td>{{ $ticket->tracker }}</td>
                             </tr>
                         @endforeach

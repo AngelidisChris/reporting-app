@@ -46,8 +46,8 @@
     @enderror
 </div>
 
-{{-- status input - edit route only --}}
-@if(Route::currentRouteName() == 'tickets.edit')
+<div class="row col-12">
+    {{-- status input  --}}
     <div class="form-group col-3">
 
         <label class="font-weight-bold col-form-label" >Status</label>
@@ -59,40 +59,44 @@
                 <option value="{{ $activeStatusKey }}" {{ $ticket->status == $activeStatusValue ? 'selected' : ''}}>{{ $activeStatusValue }}</option>
             @endforeach
         </select>
+        @error('status')
+        <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('status') }}</strong></span>
+        @enderror
     </div>
 
-    @error('status')
-    <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('status') }}</strong></span>
-    @enderror
-@endif
+    {{-- priority input --}}
+    <div class="form-group offset-4 col-3">
 
-{{-- priority input --}}
-<div class="form-group col-3">
-
-    <label class="font-weight-bold col-form-label" >Priority</label>
-    <label style="color: red" for="">*</label>
-    <select name="priority" id="priority" class="form-control @error('priority') is-invalid @enderror">
-        <option value="" disabled>Select Ticket Priority</option>
-        @foreach($ticket->priorityOptions() as $activePriorityKey => $activePriorityValue)
-            <option value="{{ $activePriorityKey }}" {{ $ticket->priority == $activePriorityValue ? 'selected' : ''}}>{{ $activePriorityValue }}</option>
-        @endforeach
-    </select>
-    @error('priority')
-    <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('priority') }}</strong></span>
-    @enderror
+        <label class="font-weight-bold col-form-label" >Priority</label>
+        <label style="color: red" for="">*</label>
+        <select name="priority" id="priority" class="form-control @error('priority') is-invalid @enderror">
+            <option value="" disabled>Select Ticket Priority</option>
+            @foreach($ticket->priorityOptions() as $activePriorityKey => $activePriorityValue)
+                <option value="{{ $activePriorityKey }}" {{ $ticket->priority == $activePriorityValue ? 'selected' : ''}}>{{ $activePriorityValue }}</option>
+            @endforeach
+        </select>
+        @error('priority')
+        <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('priority') }}</strong></span>
+        @enderror
+    </div>
 </div>
 
-{{-- due date input --}}
-<div class="form-group col-3">
-    <label class="font-weight-bold col-form-label" for="due_date">Due Date</label>
+<div class="row col-12">
+    {{-- due date input --}}
+    <div class="form-group col-3">
+        <label class="font-weight-bold col-form-label" for="due_date">Due Date</label>
 
-    <input id="due_date" name="due_date" type="date" value="{{ old('due_date') ?? $ticket->due_date }}" class="form-control @error('due_date') is-invalid @enderror">
+        <input id="due_date" name="due_date" type="date" value="{{ old('due_date') ?? $ticket->due_date }}" class="form-control @error('due_date') is-invalid @enderror">
 
-    @error('due_date')
-    <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('due_date') }}</strong></span>
-    @enderror
+        @error('due_date')
+        <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('due_date') }}</strong></span>
+        @enderror
+    </div>
 </div>
 
-<input type="hidden" name="token" value="{{$token}}">
+<div>
+<input type="hidden" name="token" value=" {{$token}}">
+</div>
+
 
 

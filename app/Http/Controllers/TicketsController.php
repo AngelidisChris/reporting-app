@@ -27,7 +27,7 @@ class TicketsController extends Controller
      */
     public function index()
     {
-        $tickets = Ticket::where('user_id', Auth::user()->id)->get();
+        $tickets = Ticket::sortable()->where('user_id', Auth::user()->id)->get();
 
         return view('tickets.index', compact('tickets'));
     }
@@ -71,7 +71,7 @@ class TicketsController extends Controller
         auth()->user()->tickets()->create([
             'title' => $data['title'],
             'body' => $data['body'],
-            'status' => 0,
+            'status' => $data['status'],
             'priority' => $data['priority'],
             'due_date' => $data['due_date'],
             'tracker' => $data['tracker']
