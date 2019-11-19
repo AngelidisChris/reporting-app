@@ -56,7 +56,7 @@
                 </div>
                 <div class="row col-12">
                     <dt class="col-2">Assignee:</dt>
-                    <dd class="col-3">{{ $ticket->assigned_to }}</dd>
+                    <dd class="col-3"><a href="">{{ $ticket->assignedUser->name }}</a></dd>
                 </div>
             </dl>
             <hr>

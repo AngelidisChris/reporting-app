@@ -12,7 +12,7 @@ class Ticket extends Model
 
     use Sortable;
 
-    public $sortable = ['id','title','body', 'status','priority','created_at', 'due_date', 'tracker'];
+    public $sortable = ['id','title','body', 'status','priority','created_at', 'due_date', 'tracker', 'assigned_to'];
 
 
     protected $dates = [
@@ -50,6 +50,7 @@ class Ticket extends Model
         'priority',
         'due_date',
         'tracker',
+        'assigned_to'
         ];
 
     public function getStatusAttribute($attribute)
@@ -102,5 +103,10 @@ class Ticket extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function assignedUser()
+    {
+        return $this->belongsTo(User::class, 'assigned_to');
     }
 }

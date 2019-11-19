@@ -23,6 +23,7 @@
                     <tr>
                         <th>@sortablelink('id')</th>
                         <th>@sortablelink('user_id', 'issuer')</th>
+                        <th>@sortablelink('assigned_to', 'Assignee')</th>
                         <th>@sortablelink('title')</th>
                         <th>@sortablelink('body', 'Subject')</th>
                         <th>@sortablelink('created_at', 'Created')</th>
@@ -36,7 +37,8 @@
                         @foreach($tickets as $ticket)
                             <tr class="table-tr" data-url="/tickets/{{ $ticket->id }}">
                                 <td><a class="" href="/tickets/{{ $ticket->id}}">{{ str_pad($ticket->id,3,'0',STR_PAD_LEFT) }}</a></td>
-                                <td>{{ $ticket->user->name }}</td>
+                                <td><a href="">{{ $ticket->user->name }}</a></td>
+                                <td><a href="">{{!is_null($ticket->assignedUser) ? $ticket->assignedUser->name : '' }}</a></td>
                                 <td>{{ str_limit($ticket->title, 30) }}</td>
                                 <td> <span title="{{$ticket->body}}">{{ str_limit($ticket->body, 30) }}</span></td>
                                 <td >{{ ($ticket->created_at)->format('d M Y') }}</td>
