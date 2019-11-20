@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Ticket;
+use App\User;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -41,12 +42,13 @@ class TicketsController extends Controller
     {
         $ticket = new Ticket();
 
+        $users = User::all();
 //      Prevent double submit -- generate a random token and storing it in a session AND a hidden field.
 //      If it doesnt match, reject the form, if it does match, accept the form and nuke the session key.
         $token = Str::random(16);
         session(['token' => $token]);
 
-        return view('tickets.create', compact('ticket', 'token'));
+        return view('tickets.create', compact('ticket', 'token', 'users'));
 
     }
 
@@ -68,14 +70,19 @@ class TicketsController extends Controller
 //        create new ticket if the input validation passes
         $data = $this->validateRequest();
 
-        auth()->user()->tickets()->create([
-            'title' => $data['title'],
-            'body' => $data['body'],
-            'status' => $data['status'],
-            'priority' => $data['priority'],
-            'due_date' => $data['due_date'],
-            'tracker' => $data['tracker']
-            ]);
+//        auth()->user()->tickets()->create([
+//            'title' => $data['title'],
+//            'body' => $data['body'],
+//            'status' => $data['status'],
+//            'priority' => $data['priority'],
+//            'due_date' => $data['due_date'],
+//            'tracker' => $data['tracker'],
+//            'assigned_to' => $data['assigned_to']
+//            ]);
+
+        auth()->user()->tickets()->create(
+            $this->validateRequest()
+            );
 
         return redirect('/tickets');
     }
@@ -102,9 +109,11 @@ class TicketsController extends Controller
 //      Prevent double submit -- generate a random token and storing it in a session AND a hidden field.
 //      If it doesnt match, reject the form, if it does match, accept the form and nuke the session key.
         $token = Str::random(16);
+        $users = User::all();
+
         session(['token' => $token]);
 
-        return view('tickets.edit', compact('ticket', 'token'));
+        return view('tickets.edit', compact('ticket', 'token', 'users'));
     }
 
     /**
@@ -150,9 +159,10 @@ class TicketsController extends Controller
             'title' => 'required|max:300',
             'body' => 'required|max:10000',
             'priority' => 'required|integer',
-            'due_date' => 'date|after_or_equal:today|nullable',
+            'due_date' => 'sometimes|date|after_or_equal:today|nullable',
             'tracker' => 'required|integer',
-            'status'=> 'sometimes|integer'
+            'status'=> 'required|integer',
+            'assigned_to' => 'sometimes|integer'
         ]));
     }
 }
