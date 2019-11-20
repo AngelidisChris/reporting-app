@@ -14,13 +14,15 @@
         <h2>{{ $ticket->tracker }}</h2>
         <h2 class="pl-2">#{{ str_pad($ticket->id,3,'0',STR_PAD_LEFT) }}</h2>
         <a href="/tickets/{{$ticket->id}}/edit" class="btn btn-primary ml-auto mr-3"><i class="fa fa-pencil pr-2"></i>Edit</a>
-        <form action="/tickets/{{$ticket->id}}" method="post">
-            @method('DELETE')
-            @csrf
+        @can('delete', $ticket)
+            <form action="/tickets/{{$ticket->id}}" method="post">
+                @method('DELETE')
+                @csrf
 
-            <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure?')"><i class="fa fa-trash-o pr-2"></i>Delete</button>
+                <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure?')"><i class="fa fa-trash-o pr-2"></i>Delete</button>
 
-        </form>
+            </form>
+        @endcan
     </div>
 
     <div class="row pt-4 border">

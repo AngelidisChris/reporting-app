@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Ticket;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -48,6 +49,7 @@ class TicketsController extends Controller
         $token = Str::random(16);
         session(['token' => $token]);
 
+
         return view('tickets.create', compact('ticket', 'token', 'users'));
 
     }
@@ -61,6 +63,7 @@ class TicketsController extends Controller
     public function store(Request $request)
     {
 
+
 //        check if session token and hidden field are equal. If yes, nuke session var, else double submit
         if (session()->has('token') && $request['token'] == session()->get('token'))
             session()->remove('token');
@@ -70,19 +73,21 @@ class TicketsController extends Controller
 //        create new ticket if the input validation passes
         $data = $this->validateRequest();
 
-//        auth()->user()->tickets()->create([
-//            'title' => $data['title'],
-//            'body' => $data['body'],
-//            'status' => $data['status'],
-//            'priority' => $data['priority'],
-//            'due_date' => $data['due_date'],
-//            'tracker' => $data['tracker'],
-//            'assigned_to' => $data['assigned_to']
-//            ]);
 
-        auth()->user()->tickets()->create(
-            $this->validateRequest()
-            );
+        $ticket = auth()->user()->tickets()->create([
+            'title' => $data['title'],
+            'body' => $data['body'],
+            'status' => $data['status'],
+            'priority' => $data['priority'],
+            'due_date' => $data['due_date'],
+            'tracker' => $data['tracker'],
+            'assigned_to' => $data['assigned_to']
+            ]);
+
+
+//        auth()->user()->tickets()->create(
+//            $this->validateRequest()
+//            );
 
         return redirect('/tickets');
     }
@@ -145,10 +150,17 @@ class TicketsController extends Controller
     public function destroy(Ticket $ticket)
     {
         try {
-            $ticket->delete();
-        } catch (\Exception $e){
+            $this->authorize('delete', $ticket);
+            try {
+                $ticket->delete();
+            } catch (\Exception $e){
 
+            }
+        } catch (\Exception $e) {
+            abort(403, 'Unauthorized action.');
         }
+
+
 
         return redirect('/tickets')->with('message', 'Ticket #' . str_pad($ticket->id,3,'0',STR_PAD_LEFT) . ' was deleted.');
     }
@@ -159,10 +171,10 @@ class TicketsController extends Controller
             'title' => 'required|max:300',
             'body' => 'required|max:10000',
             'priority' => 'required|integer',
-            'due_date' => 'sometimes|date|after_or_equal:today|nullable',
+            'due_date' => 'date|after_or_equal:today|nullable',
             'tracker' => 'required|integer',
             'status'=> 'required|integer',
-            'assigned_to' => 'sometimes|integer'
+            'assigned_to' => 'sometimes|integer|nullable'
         ]));
     }
 }

@@ -90,7 +90,7 @@
 
 
         <select name="assigned_to" id="assigned_to" class="form-control">
-            <option value="" disabled selected>Select Assignee</option>
+            <option value="" hidden >Select Assignee</option>
             @foreach($users as $user)
                 <option value="{{ $user->id }}" {{ ($ticket->assignedUser) ?  ($user->id == $ticket->assignedUser->id  ? 'selected' : '') : '' }}>{{ $user->name }}</option>
             @endforeach
@@ -102,10 +102,10 @@
     <div class="form-group offset-4  col-4">
         <label class="font-weight-bold col-form-label" for="due_date">Due Date</label>
 
-        <input id="due_date"  name="due_date" type="date" value="{{ old('due_date') ?? $ticket->due_date}}" class="form-control @error('due_date') is-invalid @enderror">
+        <input id="due_date"  name="due_date" type="date" value="{{  old('due_date') ?? ($ticket->due_date != null) ? Carbon\Carbon::parse($ticket->getOriginal('due_date'))->format('Y-m-d') : null }}" class="form-control @error('due_date') is-invalid @enderror">
 
         @error('due_date')
-        <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('due_date') }}</strong></span>
+            <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('due_date') }}</strong></span>
         @enderror
     </div>
 </div>

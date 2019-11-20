@@ -44,7 +44,7 @@
                                 <td >{{ ($ticket->created_at)->format('d M Y') }}</td>
                                 <td><span class="box px-2 py-1 font-weight-bold rounded status-level-{{ $ticket->getOriginal('status') }}">{{ $ticket->status }}</span></td>
                                 <td><span class="box px-2 py-1 font-weight-bold rounded priority-level-{{ $ticket->getOriginal('priority') }}">{{ $ticket->priority }}</span></td>
-                                <td >{{ ($ticket->due_date)->format('d M Y') }}</td>
+                                <td >{{ ($ticket->due_date) ?($ticket->due_date)->format('d M Y') : ''}}</td>
                                 <td>{{ $ticket->tracker }}</td>
                             </tr>
                         @endforeach

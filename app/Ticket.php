@@ -23,7 +23,7 @@ class Ticket extends Model
 
     public function setDueDateAttribute($due_date)
     {
-        $this->attributes['due_date'] = Carbon::parse($due_date);
+        $this->attributes['due_date'] = $due_date ? Carbon::parse($due_date) : null;
     }
 
     public function setCreatedAtAttribute($created_at)
@@ -37,7 +37,7 @@ class Ticket extends Model
     }
 
     protected $attributes = [
-        'status' => 3,
+        'status' => 0,
         'priority' => 1,
         'tracker' => 1
     ];
