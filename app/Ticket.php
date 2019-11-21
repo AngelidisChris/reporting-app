@@ -102,7 +102,24 @@ class Ticket extends Model
     }
 
 
+    public function group_by($key, $data)
+    {
+//        dd($data);
+//        $collection = collect();
+//        foreach ($data as  $dat) {
+//            $collection->push($dat->toArray());
+//        }
+//
+//        $result = array();
+        $grouped = $data->mapToGroups(function ($item) use ($key) {
+            return [$item[$key]->format('Y-m-d h-m-s') => $item];
+        });
 
+
+
+        return $grouped;
+
+    }
     public function user()
     {
         return $this->belongsTo(User::class);

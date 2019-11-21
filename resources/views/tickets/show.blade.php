@@ -77,8 +77,50 @@
 
     </div>
 
+{{--    // history section--}}
+    <div class="history-log row pt-4">
+        <h2>History log</h2>
+    </div>
 
-@section('pagespecificscripts')
+    <div class="row">
+
+
+
+
+            @foreach($ticket->group_by('created_at', $ticket->revisionHistory) as $history)
+                <div class="col-10 border pt-2 mb-3">
+                    @if($history[0]->key == 'created_at' && !$history[0]->old_value)
+                        <span class="font-weight-bold pl-1">Created by &nbsp;<a href="#">
+                                    {{ $history[0]->userResponsible()->name }}
+                                    &nbsp;{{ \Carbon\Carbon::parse($history[0]->newValue())->diffForHumans() }}</a>
+                                </span>
+                    @else
+                        <span class="font-weight-bold">Updated by &nbsp;<a href="#">
+                                    {{ $history[0]->userResponsible()->name }}
+                                    &nbsp;{{ \Carbon\Carbon::parse($history[0]->created_at)->diffForHumans() }}</a>
+                        </span>
+
+                        @foreach($history as $his)
+
+                            <span class="row pl-3 ">
+                                @if($his->fieldName() == 'assigned_to' && $his->oldValue() != null && $his->newValue() == null)
+                                    Assignee unset &nbsp;<a href=""> {{ \App\User::find($his->oldValue())['name'] }}</a>
+
+                                @elseif($his->fieldName() == 'assigned_to' && $his->oldValue() != null && $his->newValue() != null)
+                                    Assignee set &nbsp;<a href=""> {{ \App\User::find($his->newValue())['name'] }} </a> &nbsp;from&nbsp; <a href=""> {{ \App\User::find($his->oldValue())['name'] }} </a>
+                            </span>
+                            @endif
+                        @endforeach
+                    @endif
+                </div>
+            @endforeach
+
+    </div>
+
+
+
+{{--    // remove div if no assignee, else add delete button--}}
+@section('pagesspecificscripts')
     <!-- flot charts scripts-->
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
