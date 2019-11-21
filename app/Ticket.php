@@ -5,12 +5,15 @@ namespace App;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
-
+use \Venturecraft\Revisionable\RevisionableTrait;
 
 class Ticket extends Model
 {
-
+    use RevisionableTrait;
     use Sortable;
+
+    protected $revisionCreationsEnabled = true;
+
 
     public $sortable = ['id','title','body', 'status','priority','created_at', 'due_date', 'tracker', 'assigned_to'];
 

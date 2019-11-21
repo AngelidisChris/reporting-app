@@ -176,7 +176,8 @@ class TicketsController extends Controller
      */
     public function removeAssignee()
     {
-        Ticket::where ('id', \request('id'))->update(\request()->all());
+        $ticket = Ticket::find(\request('id'));
+        $ticket->update(['assigned_to' => null]);
         return response()->json('');
     }
 
