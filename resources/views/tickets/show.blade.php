@@ -10,17 +10,21 @@
         </div>
     @endif
 
-    <div class="row d-flex align-items-start pb-2">
+    <div class="header row d-flex align-items-start pb-2">
         <h2>{{ $ticket->tracker }}</h2>
+
         <h2 class="pl-2">#{{ str_pad($ticket->id,3,'0',STR_PAD_LEFT) }}</h2>
-        <a href="/tickets/{{$ticket->id}}/edit" class="btn btn-primary ml-auto mr-3"><i class="fa fa-pencil pr-2"></i>Edit</a>
-        @can('delete', $ticket)
+        {{--  use update policy to hide update button   --}}
+        @can('update', $ticket)
+            <a href="/tickets/{{$ticket->id}}/edit" class="btn btn-primary ml-auto mr-3"><i class="fa fa-pencil pr-2"></i>Edit</a>
+        @endcan
+            {{--   use delete policy to hide delete button   --}}
+            @can('delete', $ticket)
             <form action="/tickets/{{$ticket->id}}" method="post">
                 @method('DELETE')
                 @csrf
 
                 <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure?')"><i class="fa fa-trash-o pr-2"></i>Delete</button>
-
             </form>
         @endcan
     </div>
@@ -58,7 +62,8 @@
                 </div>
                 <div class="row col-12">
                     <dt class="col-2">Assignee:</dt>
-                    <dd class="col-3"><a href="">{{($ticket->assignedUser) ? $ticket->assignedUser->name : '' }}</a></dd>
+                    <dd class="col-3"><a id="assignee-name" href="">{{($ticket->assignedUser) ? $ticket->assignedUser->name : '' }}</a> <a href="#" class="remove_assignee" id="remove" assignee-id="{{ $ticket->id }}"> </a></dd>
+
                 </div>
             </dl>
             <hr>
@@ -73,7 +78,21 @@
     </div>
 
 
+@section('pagespecificscripts')
+    <!-- flot charts scripts-->
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            if (document.getElementById('assignee-name').innerHTML == '')
+            {
+                document.getElementById('remove').remove();
+            }
+            else{
+                document.getElementById('remove').innerHTML = '<i class=\'fa fa-times fa-lg pl-1\' style=\'color: red\' aria-hidden=\'true\'></i>'
 
+            }
+        });
+    </script>
+@stop
 {{--    <div class="row pt-4 border">--}}
 {{--        <div class="col-10">--}}
 {{--            <p>--}}

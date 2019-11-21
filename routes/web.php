@@ -22,6 +22,8 @@ Route::get('/tickets', 'TicketsController@index')->name('tickets.index');
 Route::get('/tickets/create', 'TicketsController@create')->name('tickets.create');
 Route::post('/tickets', 'TicketsController@store')->name('tickets.store');
 Route::get('/tickets/{ticket}', 'TicketsController@show')->name('tickets.show');
-Route::get('/tickets/{ticket}/edit', 'TicketsController@edit')->name('tickets.edit');
-Route::patch('/tickets/{ticket}', 'TicketsController@update')->name('tickets.update');
-Route::delete('/tickets/{ticket}', 'TicketsController@destroy')->name('tickets.destroy');
+Route::get('/tickets/{ticket}/edit', 'TicketsController@edit')->name('tickets.edit')->middleware('can:update,ticket');
+Route::patch('/tickets/{ticket}', 'TicketsController@update')->name('tickets.update')->middleware('can:update,ticket');
+Route::delete('/tickets/{ticket}', 'TicketsController@destroy')->name('tickets.destroy')->middleware('can:delete,ticket');
+
+Route::post('/tickets/removeAssignee', 'TicketsController@removeAssignee');

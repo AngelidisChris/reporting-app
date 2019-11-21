@@ -28,13 +28,17 @@
         @include('layouts.nav')
 
         <main class="py-4">
-            <div class="container">
+            <div class="container" id="container">
                 @yield('content')
             </div>
         </main>
     </div>
 
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script
+        src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+        crossorigin="anonymous"></script>
+    @yield('pagespecificscripts')
 </body>
 </html>

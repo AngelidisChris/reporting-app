@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Ticket;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class TicketPolicy
 {
@@ -49,11 +50,11 @@ class TicketPolicy
      *
      * @param  \App\User  $user
      * @param  \App\Ticket  $ticket
-     * @return mixed
+     * @return Bool
      */
     public function update(User $user, Ticket $ticket)
     {
-        //
+        return $ticket->user_id == $user->id || $ticket->assigned_to == $user->id;
     }
 
     /**
@@ -61,9 +62,21 @@ class TicketPolicy
      *
      * @param  \App\User  $user
      * @param  \App\Ticket  $ticket
-     * @return mixed
+     * @return Bool
      */
     public function delete(User $user, Ticket $ticket)
+    {
+        return $ticket->user_id == $user->id || $ticket->assigned_to == $user->id;
+    }
+
+    /**
+     * Determine whether the user can remove ticket assignee.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Ticket  $ticket
+     * @return Bool
+     */
+    public function removeAssignee(User $user, Ticket $ticket)
     {
         return $ticket->user_id == $user->id || $ticket->assigned_to == $user->id;
     }

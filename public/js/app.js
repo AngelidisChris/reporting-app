@@ -49386,7 +49386,40 @@ $(document).ready(function () {
   $(document).on('submit', 'form', function () {
     $('button').attr('disabled', 'disabled');
   });
+}); // Update ticket assignee
+
+$(document).on("click", ".remove_assignee", function () {
+  var edit_id = document.getElementById('remove').getAttribute("assignee-id");
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  });
+  $.ajax({
+    url: '/tickets/removeAssignee',
+    method: 'post',
+    data: {
+      id: edit_id,
+      assigned_to: null
+    },
+    success: function success(res) {
+      document.getElementById('remove').remove();
+      document.getElementById('assignee-name').innerHTML = '';
+      removeAssigneeMessage();
+    }
+  });
 });
+
+function removeAssigneeMessage() {
+  var div = document.createElement("div");
+  div.className = "alert alert-danger message";
+  div.setAttribute('role', 'alert');
+  $(".header").before($(div));
+  $(".message").append('<strong>Assignee removed.</strong>');
+  setTimeout(function () {
+    $('.message').hide("slow");
+  }, 3000);
+}
 
 /***/ }),
 

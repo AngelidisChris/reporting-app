@@ -5,11 +5,17 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-12">
+        <div class="col-12 message-parent">
 
             @if(session()->has('message'))
                 <div id="message" class="alert alert-danger message" role="alert">
                     <strong>{{ session()->get('message') }}</strong>
+                </div>
+            @endif
+
+            @if(session()->has('create-message'))
+                <div id="message" class="alert alert-success message" role="alert">
+                    <strong>{{ session()->get('create-message') }}</strong>
                 </div>
             @endif
             <div class="row d-flex align-items-start">

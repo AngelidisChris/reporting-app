@@ -29,7 +29,7 @@ class TicketsController extends Controller
      */
     public function index()
     {
-        $tickets = Ticket::sortable()->get();
+        $tickets = Ticket::sortable()->orderBy('created_at', 'desc')->get();
 
         return view('tickets.index', compact('tickets'));
     }
@@ -89,7 +89,7 @@ class TicketsController extends Controller
 //            $this->validateRequest()
 //            );
 
-        return redirect('/tickets');
+        return redirect('/tickets')->with('create-message', 'Ticket #' . str_pad($ticket->id,3,'0',STR_PAD_LEFT) . ' successfully created.');;
     }
 
     /**
@@ -150,18 +150,10 @@ class TicketsController extends Controller
     public function destroy(Ticket $ticket)
     {
         try {
-            $this->authorize('delete', $ticket);
-            try {
-                $ticket->delete();
-            } catch (\Exception $e){
+            $ticket->delete();
+        } catch (\Exception $e){
 
-            }
-        } catch (\Exception $e) {
-            abort(403, 'Unauthorized action.');
         }
-
-
-
         return redirect('/tickets')->with('message', 'Ticket #' . str_pad($ticket->id,3,'0',STR_PAD_LEFT) . ' was deleted.');
     }
 
@@ -177,4 +169,15 @@ class TicketsController extends Controller
             'assigned_to' => 'sometimes|integer|nullable'
         ]));
     }
+
+    /**
+     * Use when we delete ticket assignee from show view
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function removeAssignee()
+    {
+        Ticket::where ('id', \request('id'))->update(\request()->all());
+        return response()->json('');
+    }
+
 }
