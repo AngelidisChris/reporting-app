@@ -71,7 +71,7 @@ class TicketsController extends Controller
             return redirect('/tickets');
 
 //        create new ticket if the input validation passes
-        $data = $this->validateRequest();
+        $data = $this->validateCreateRequest();
 
 
         $ticket = auth()->user()->tickets()->create([
@@ -135,7 +135,7 @@ class TicketsController extends Controller
         else
             return redirect('/tickets');
 
-        $ticket->update($this->validateRequest());
+        $ticket->update($this->validateUpdateRequest());
 
         return redirect('tickets/' . $ticket->id)->with('message', 'Successful update.');
     }
@@ -157,7 +157,7 @@ class TicketsController extends Controller
         return redirect('/tickets')->with('message', 'Ticket #' . str_pad($ticket->id,3,'0',STR_PAD_LEFT) . ' was deleted.');
     }
 
-    private function validateRequest()
+    private function validateCreateRequest()
     {
         return (\request()->validate([
             'title' => 'required|max:300',
@@ -166,7 +166,19 @@ class TicketsController extends Controller
             'due_date' => 'date|after_or_equal:today|nullable',
             'tracker' => 'required|integer',
             'status'=> 'required|integer',
-            'assigned_to' => 'sometimes|integer|nullable'
+            'assigned_to' => 'sometimes|integer|nullable',
+        ]));
+    }
+
+    private function validateUpdateRequest()
+    {
+        return (\request()->validate([
+            'comment' => 'required|max:10000',
+            'priority' => 'required|integer',
+            'due_date' => 'date|after_or_equal:today|nullable',
+            'tracker' => 'required|integer',
+            'status'=> 'required|integer',
+            'assigned_to' => 'sometimes|integer|nullable',
         ]));
     }
 

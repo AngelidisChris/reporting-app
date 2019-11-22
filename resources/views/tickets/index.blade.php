@@ -30,8 +30,8 @@
                         <th>@sortablelink('id')</th>
                         <th>@sortablelink('user_id', 'issuer')</th>
                         <th>@sortablelink('assigned_to', 'Assignee')</th>
-                        <th>@sortablelink('title')</th>
-                        <th>@sortablelink('body', 'Subject')</th>
+                        <th width="25%">@sortablelink('title')</th>
+{{--                        <th>@sortablelink('body', 'Subject')</th>--}}
                         <th>@sortablelink('created_at', 'Created')</th>
                         <th>@sortablelink('status')</th>
                         <th>@sortablelink('priority')</th>
@@ -45,8 +45,8 @@
                                 <td><a class="" href="/tickets/{{ $ticket->id}}">{{ str_pad($ticket->id,3,'0',STR_PAD_LEFT) }}</a></td>
                                 <td><a href="">{{ $ticket->user->name }}</a></td>
                                 <td><a href="">{{!is_null($ticket->assignedUser) ? $ticket->assignedUser->name : '' }}</a></td>
-                                <td>{{ str_limit($ticket->title, 30) }}</td>
-                                <td> <span title="{{$ticket->body}}">{{ str_limit($ticket->body, 30) }}</span></td>
+                                <td><span title="{{$ticket->title}}">{{ str_limit($ticket->title, 40) }}</span></td>
+{{--                                <td> <span title="{{$ticket->body}}">{{ str_limit($ticket->body, 30) }}</span></td>--}}
                                 <td >{{ ($ticket->created_at)->format('d M Y') }}</td>
                                 <td><span class="box px-2 py-1 font-weight-bold rounded status-level-{{ $ticket->getOriginal('status') }}">{{ $ticket->status }}</span></td>
                                 <td><span class="box px-2 py-1 font-weight-bold rounded priority-level-{{ $ticket->getOriginal('priority') }}">{{ $ticket->priority }}</span></td>

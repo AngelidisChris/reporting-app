@@ -14,6 +14,17 @@ class Ticket extends Model
 
     protected $revisionCreationsEnabled = true;
 
+    protected $revisionFormattedFieldNames = [
+        'assigned_to'   => 'Assignee',
+        'status'        => 'Status',
+        'priority'      => 'Priority',
+        'due_date'      => 'Due Date',
+        'tracker'       => 'Tracker'
+    ];
+    protected $revisionFormattedFields = [
+        'due_date'      => 'datetime:d/M/Y'
+    ];
+
 
     public $sortable = ['id','title','body', 'status','priority','created_at', 'due_date', 'tracker', 'assigned_to'];
 
@@ -53,7 +64,8 @@ class Ticket extends Model
         'priority',
         'due_date',
         'tracker',
-        'assigned_to'
+        'assigned_to',
+        'comment'
         ];
 
     public function getStatusAttribute($attribute)
@@ -101,24 +113,40 @@ class Ticket extends Model
         ];
     }
 
+    public function getTableValues($name,$value)
+    {
 
+        if($name == 'Assignee')
+        {
+            $value = User::findOrFail($value)['name'];
+        }
+        else{
+            return $value;
+        }
+        return $value;
+    }
+
+
+//    group update collection by create date
     public function group_by($key, $data)
     {
-//        dd($data);
-//        $collection = collect();
-//        foreach ($data as  $dat) {
-//            $collection->push($dat->toArray());
-//        }
-//
-//        $result = array();
+
+
+        $data = $data->sortBy('created_at',SORT_REGULAR, true);
+
         $grouped = $data->mapToGroups(function ($item) use ($key) {
-            return [$item[$key]->format('Y-m-d h-m-s') => $item];
+
+            return [$item[$key]->format('Y-m-d H-i-s') => $item];
         });
 
-
+        $grouped->transform(function ($item, $key){
+            foreach ($item as $l)
+                if ($l['key'] == 'comment')
+                    $l['key'] = 'z';
+            return $item->sortBy('key');
+        });
 
         return $grouped;
-
     }
     public function user()
     {

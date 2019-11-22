@@ -19,13 +19,12 @@ class CreateTicketsTable extends Migration
             $table->bigInteger('assigned_to')->nullable();
             $table->string('title');
             $table->text('body');
+            $table->text('comment')->nullable();
             $table->integer('status');
             $table->integer('priority');
             $table->timestamp('due_date')->nullable();
             $table->timestamp('tracker');
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -37,5 +36,6 @@ class CreateTicketsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('tickets');
+
     }
 }

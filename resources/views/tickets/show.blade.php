@@ -62,7 +62,11 @@
                 </div>
                 <div class="row col-12">
                     <dt class="col-2">Assignee:</dt>
-                    <dd class="col-3"><a id="assignee-name" href="">{{($ticket->assignedUser) ? $ticket->assignedUser->name : '' }}</a> <a href="#" class="remove_assignee" id="remove" assignee-id="{{ $ticket->id }}"> </a></dd>
+                    <dd class="col-3"><a id="assignee-name" href="">{{($ticket->assignedUser) ? $ticket->assignedUser->name : '' }}</a>
+                        @can('update', $ticket)
+                            <a href="#" class="remove_assignee" id="remove" assignee-id="{{ $ticket->id }}"> </a>
+                        @endcan
+                    </dd>
 
                 </div>
             </dl>
@@ -84,43 +88,72 @@
 
     <div class="row">
 
+        @foreach($ticket->group_by('created_at', $ticket->revisionHistory) as $history)
+            <div class="col-10 border pt-2 pb-2 mb-3">
+                @if($history[0]->key == 'created_at' && !$history[0]->old_value)
+                    <div class="font-weight-bold pl-1">
+                    <span class="">Created by &nbsp;<a href="#">
+                        {{ $history[0]->userResponsible()->name }}
+                        &nbsp;{{ \Carbon\Carbon::parse($history[0]->newValue())->diffForHumans() }}</a>
+                    </span>
+                    </div>
 
-
-
-            @foreach($ticket->group_by('created_at', $ticket->revisionHistory) as $history)
-                <div class="col-10 border pt-2 mb-3">
-                    @if($history[0]->key == 'created_at' && !$history[0]->old_value)
-                        <span class="font-weight-bold pl-1">Created by &nbsp;<a href="#">
-                                    {{ $history[0]->userResponsible()->name }}
-                                    &nbsp;{{ \Carbon\Carbon::parse($history[0]->newValue())->diffForHumans() }}</a>
-                                </span>
-                    @else
-                        <span class="font-weight-bold">Updated by &nbsp;<a href="#">
-                                    {{ $history[0]->userResponsible()->name }}
-                                    &nbsp;{{ \Carbon\Carbon::parse($history[0]->created_at)->diffForHumans() }}</a>
-                        </span>
-
+                @else
+                    <span class="font-weight-bold">Updated by &nbsp;<a href="#">
+                        {{ $history[0]->userResponsible()->name }}
+                        &nbsp;{{ \Carbon\Carbon::parse($history[0]->created_at)->diffForHumans() }}</a>
+                    </span>
+                    <div class=" col-12 pt-3">
                         @foreach($history as $his)
+                            <div class="col-12 log-section">
+                                @if($his->fieldName() != 'z')
+                                    @if($his->oldValue() != null && $his->newValue() == null)
+                                        <span class="font-weight-bold">{{ $his->fieldName() }}</span>&nbsp; unset &nbsp;
+                                        @if($his->fieldName() == 'Assignee')
+                                            <a href=""> {{ $ticket->getTableValues($his->fieldName(), $his->oldValue()) }}</a>
+                                        @else
+                                            {{$ticket->getTableValues($his->fieldName(), $his->oldValue())}}
+                                        @endif
+                                    @elseif($his->oldValue() == null && $his->newValue() != null)
+                                        <span class="font-weight-bold">{{ $his->fieldName() }}</span>&nbsp; set to &nbsp;
+                                        @if($his->fieldName() == 'Assignee')
+                                            <a href=""> {{$ticket->getTableValues($his->fieldName(), $his->newValue()) }}</a>
+                                        @else
+                                            {{$ticket->getTableValues($his->fieldName(), $his->newValue()) }}
+                                        @endif
+                                    @elseif($his->oldValue() != null && $his->newValue() != null)
+                                        <span class="font-weight-bold">{{ $his->fieldName() }}</span>&nbsp; changed from &nbsp;
+                                        @if($his->fieldName() == 'Assignee')
+                                            <a href=""> {{ $ticket->getTableValues($his->fieldName(), $his->oldValue()) }} </a>
+                                            &nbsp;to&nbsp;<a href=""> {{ $ticket->getTableValues($his->fieldName(), $his->newValue()) }} </a>
+                                        @else
+                                            {{ $ticket->getTableValues($his->fieldName(), $his->oldValue()) }}
+                                            &nbsp;to&nbsp;{{ $ticket->getTableValues($his->fieldName(), $his->newValue()) }}
+                                        @endif
+                                    @endif
+                                @endif
 
-                            <span class="row pl-3 ">
-                                @if($his->fieldName() == 'assigned_to' && $his->oldValue() != null && $his->newValue() == null)
-                                    Assignee unset &nbsp;<a href=""> {{ \App\User::find($his->oldValue())['name'] }}</a>
+                            </div>
 
-                                @elseif($his->fieldName() == 'assigned_to' && $his->oldValue() != null && $his->newValue() != null)
-                                    Assignee set &nbsp;<a href=""> {{ \App\User::find($his->newValue())['name'] }} </a> &nbsp;from&nbsp; <a href=""> {{ \App\User::find($his->oldValue())['name'] }} </a>
-                            </span>
+                            @if($his->fieldName() == 'z')
+
+                                <div class="pt-4">
+                                <p class="font-weight-bold">{{$his->newValue()}}</p>
+                                </div>
                             @endif
+
                         @endforeach
-                    @endif
-                </div>
-            @endforeach
+                    </div>
+                @endif
+            </div>
+        @endforeach
 
     </div>
 
 
 
 {{--    // remove div if no assignee, else add delete button--}}
-@section('pagesspecificscripts')
+@section('pagespecificscripts')
     <!-- flot charts scripts-->
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
@@ -133,6 +166,7 @@
 
             }
         });
+
     </script>
 @stop
 {{--    <div class="row pt-4 border">--}}

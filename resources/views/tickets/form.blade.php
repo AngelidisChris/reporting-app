@@ -17,34 +17,52 @@
     @enderror
 </div>
 
-{{-- subject input --}}
-<div class="form-group col-12">
-    <label class="font-weight-bold col-form-label" for="title">Title</label>
-    <label style="color: red" for="">*</label>
-    <input id="title" name="title" type="text" value="{{ old('title') ?? $ticket->title }}" placeholder="Title" class="form-control @error('title') is-invalid @enderror">
+@if(Route::currentRouteName() == 'tickets.create')
+    {{-- subject input --}}
+    <div class="form-group col-12">
+        <label class="font-weight-bold col-form-label" for="title">Title</label>
+        <label style="color: red" for="">*</label>
+        <input id="title" name="title" type="text" value="{{ old('title') ?? $ticket->title }}" placeholder="Title" class="form-control @error('title') is-invalid @enderror">
 
-    @error('title')
-    <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('title') }}</strong></span>
-    @enderror
+        @error('title')
+        <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('title') }}</strong></span>
+        @enderror
+    </div>
+
+    {{-- description input --}}
+    <div class="form-group col-12">
+        <label for="body" class="font-weight-bold col-form-label">Description</label>
+        <label style="color: red" for="">*</label>
+        <textarea
+               id="body"
+               type="text"
+               rows="5"
+               class="form-control @error('body') is-invalid @enderror"
+               name="body"
+               placeholder="Ticket content">{{ old('body') ?? $ticket->body }}
+        </textarea>
+
+        @error('body')
+        <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('body') }}</strong></span>
+        @enderror
 </div>
+@else
+    <div class="form-group col-12">
+        <label for="comment" class="font-weight-bold col-form-label">Comment</label>
+        <label style="color: red" for="">*</label>
+        <textarea
+            id="comment"
+            type="text"
+            rows="5"
+            class="form-control @error('comment') is-invalid @enderror"
+            name="comment"
+            placeholder="Comment update">{{ old('comment')}}
+        </textarea>
 
-{{-- description input --}}
-<div class="form-group col-12">
-    <label for="body" class="font-weight-bold col-form-label">Description</label>
-    <label style="color: red" for="">*</label>
-    <textarea
-           id="body"
-           type="text"
-           rows="5"
-           class="form-control @error('body') is-invalid @enderror"
-           name="body"
-           placeholder="Ticket content">{{ old('body') ?? $ticket->body }}
-    </textarea>
-
-    @error('body')
-    <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('body') }}</strong></span>
-    @enderror
-</div>
+        @error('comment')
+        <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('comment') }}</strong></span>
+        @enderror
+@endif
 
 <div class="row col-12">
     {{-- status input  --}}
@@ -55,8 +73,13 @@
 
         <select name="status" id="status" class="form-control @error('status') is-invalid @enderror">
             <option value="" disabled>Select Tracker Status</option>
+
             @foreach($ticket->statusOptions() as $activeStatusKey => $activeStatusValue)
+                @if( old('status') != null && $activeStatusKey == old('status'))
+                    <option value="{{$activeStatusKey}}" selected>{{ $activeStatusValue }}</option>
+                @else
                 <option value="{{ $activeStatusKey }}" {{ $ticket->status == $activeStatusValue ? 'selected' : ''}}>{{ $activeStatusValue }}</option>
+                @endif
             @endforeach
         </select>
 
@@ -73,7 +96,11 @@
         <select name="priority" id="priority" class="form-control @error('priority') is-invalid @enderror">
             <option value="" disabled>Select Ticket Priority</option>
             @foreach($ticket->priorityOptions() as $activePriorityKey => $activePriorityValue)
+                @if( old('priority') != null && $activePriorityKey == old('priority'))
+                    <option value="{{$activePriorityKey}}" selected>{{ $activePriorityValue }}</option>
+                @else
                 <option value="{{ $activePriorityKey }}" {{ ($ticket->priority == $activePriorityValue) ? 'selected' : ''}}>{{ $activePriorityValue }}</option>
+                @endif
             @endforeach
         </select>
         @error('priority')
@@ -92,7 +119,11 @@
         <select name="assigned_to" id="assigned_to" class="form-control">
             <option value="" hidden >Select Assignee</option>
             @foreach($users as $user)
+                @if(old('assigned_to') != null && old('assigned_to') == $user->id)
+                    <option value="$user->id" selected>{{ $user->name }}</option>
+                @else
                 <option value="{{ $user->id }}" {{ ($ticket->assignedUser) ?  ($user->id == $ticket->assignedUser->id  ? 'selected' : '') : '' }}>{{ $user->name }}</option>
+                @endif
             @endforeach
         </select>
     </div>
