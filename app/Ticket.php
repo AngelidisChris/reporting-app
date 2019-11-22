@@ -15,18 +15,18 @@ class Ticket extends Model
     protected $revisionCreationsEnabled = true;
 
     protected $revisionFormattedFieldNames = [
-        'assigned_to'   => 'Assignee',
-        'status'        => 'Status',
-        'priority'      => 'Priority',
-        'due_date'      => 'Due Date',
-        'tracker'       => 'Tracker'
+        'assigned_to' => 'Assignee',
+        'status' => 'Status',
+        'priority' => 'Priority',
+        'due_date' => 'Due Date',
+        'tracker' => 'Tracker'
     ];
     protected $revisionFormattedFields = [
-        'due_date'      => 'datetime:d/M/Y'
+        'due_date' => 'datetime:d/M/Y'
     ];
 
 
-    public $sortable = ['id','title','body', 'status','priority','created_at', 'due_date', 'tracker', 'assigned_to'];
+    public $sortable = ['id', 'title', 'body', 'status', 'priority', 'created_at', 'due_date', 'tracker', 'assigned_to'];
 
 
     protected $dates = [
@@ -66,7 +66,7 @@ class Ticket extends Model
         'tracker',
         'assigned_to',
         'comment'
-        ];
+    ];
 
     public function getStatusAttribute($attribute)
     {
@@ -113,14 +113,12 @@ class Ticket extends Model
         ];
     }
 
-    public function getTableValues($name,$value)
+    public function getTableValues($name, $value)
     {
 
-        if($name == 'Assignee')
-        {
+        if ($name == 'Assignee') {
             $value = User::findOrFail($value)['name'];
-        }
-        else{
+        } else {
             return $value;
         }
         return $value;
@@ -130,16 +128,14 @@ class Ticket extends Model
 //    group update collection by create date
     public function group_by($key, $data)
     {
-
-
-        $data = $data->sortBy('created_at',SORT_REGULAR, true);
+        $data = $data->sortBy('created_at', SORT_REGULAR, true);
 
         $grouped = $data->mapToGroups(function ($item) use ($key) {
 
             return [$item[$key]->format('Y-m-d H-i-s') => $item];
         });
 
-        $grouped->transform(function ($item, $key){
+        $grouped->transform(function ($item, $key) {
             foreach ($item as $l)
                 if ($l['key'] == 'comment')
                     $l['key'] = 'z';
@@ -148,6 +144,7 @@ class Ticket extends Model
 
         return $grouped;
     }
+
     public function user()
     {
         return $this->belongsTo(User::class);

@@ -27,3 +27,6 @@ Route::patch('/tickets/{ticket}', 'TicketsController@update')->name('tickets.upd
 Route::delete('/tickets/{ticket}', 'TicketsController@destroy')->name('tickets.destroy')->middleware('can:delete,ticket');
 
 Route::post('/tickets/removeAssignee', 'TicketsController@removeAssignee');
+
+// profile routes
+Route::get('/profile/{user}', 'ProfilesController@index')->name('profiles.show');

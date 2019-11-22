@@ -42,20 +42,20 @@ $(function () {
 
 $(document).ready(function () {
 
-    setTimeout(function() {
+    setTimeout(function () {
         $('.message').hide("slow");
     }, 3000);
 });
 
-$(document).ready(function() {
-    $(document).on('submit', 'form', function() {
+$(document).ready(function () {
+    $(document).on('submit', 'form', function () {
         $('button').attr('disabled', 'disabled');
     });
 });
 
 
 // Update ticket assignee
-$(document).on("click", ".remove_assignee" , function() {
+$(document).on("click", ".remove_assignee", function () {
     var edit_id = document.getElementById('remove').getAttribute("assignee-id");
 
     $.ajaxSetup({
@@ -65,12 +65,12 @@ $(document).on("click", ".remove_assignee" , function() {
     });
     $.ajax({
         url: '/tickets/removeAssignee',
-        method:'post',
-        data:{
+        method: 'post',
+        data: {
             id: edit_id,
             assigned_to: null
         },
-        success: function( res ) {
+        success: function (res) {
             document.getElementById('remove').remove();
             document.getElementById('assignee-name').innerHTML = '';
             removeAssigneeMessage();
@@ -79,16 +79,15 @@ $(document).on("click", ".remove_assignee" , function() {
 });
 
 
-
 function removeAssigneeMessage() {
     const div = document.createElement("div");
     div.className = "alert alert-danger message";
     div.setAttribute('role', 'alert');
-    $( ".header" ).before( $( div ) );
+    $(".header").before($(div));
 
     $(".message").append('<strong>Assignee removed.</strong>');
 
-    setTimeout(function() {
+    setTimeout(function () {
         $('.message').hide("slow");
     }, 3000);
 }

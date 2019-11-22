@@ -82,20 +82,20 @@ class TicketsController extends Controller
             'due_date' => $data['due_date'],
             'tracker' => $data['tracker'],
             'assigned_to' => $data['assigned_to']
-            ]);
+        ]);
 
 
 //        auth()->user()->tickets()->create(
 //            $this->validateRequest()
 //            );
 
-        return redirect('/tickets')->with('create-message', 'Ticket #' . str_pad($ticket->id,3,'0',STR_PAD_LEFT) . ' successfully created.');;
+        return redirect('/tickets')->with('create-message', 'Ticket #' . str_pad($ticket->id, 3, '0', STR_PAD_LEFT) . ' successfully created.');;
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  Ticket $ticket
+     * @param Ticket $ticket
      * @return View
      */
     public function show(Ticket $ticket)
@@ -106,7 +106,7 @@ class TicketsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Ticket $ticket
+     * @param Ticket $ticket
      * @return View
      */
     public function edit(Ticket $ticket)
@@ -124,7 +124,7 @@ class TicketsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Ticket $ticket
+     * @param Ticket $ticket
      * @return RedirectResponse
      */
     public function update(Ticket $ticket)
@@ -151,10 +151,10 @@ class TicketsController extends Controller
     {
         try {
             $ticket->delete();
-        } catch (\Exception $e){
+        } catch (\Exception $e) {
 
         }
-        return redirect('/tickets')->with('message', 'Ticket #' . str_pad($ticket->id,3,'0',STR_PAD_LEFT) . ' was deleted.');
+        return redirect('/tickets')->with('message', 'Ticket #' . str_pad($ticket->id, 3, '0', STR_PAD_LEFT) . ' was deleted.');
     }
 
     private function validateCreateRequest()
@@ -165,7 +165,7 @@ class TicketsController extends Controller
             'priority' => 'required|integer',
             'due_date' => 'date|after_or_equal:today|nullable',
             'tracker' => 'required|integer',
-            'status'=> 'required|integer',
+            'status' => 'required|integer',
             'assigned_to' => 'sometimes|integer|nullable',
         ]));
     }
@@ -177,7 +177,7 @@ class TicketsController extends Controller
             'priority' => 'required|integer',
             'due_date' => 'date|after_or_equal:today|nullable',
             'tracker' => 'required|integer',
-            'status'=> 'required|integer',
+            'status' => 'required|integer',
             'assigned_to' => 'sometimes|integer|nullable',
         ]));
     }
