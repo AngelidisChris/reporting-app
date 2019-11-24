@@ -19,8 +19,8 @@ class ProfilesController extends Controller
     public function index(User $user)
     {
 
-        $ticketsCreated = Auth::user()->tickets;
-        $ticketsAssigned = Auth::user()->assignedTickets;
+        $ticketsCreated = $user->tickets;
+        $ticketsAssigned = $user->assignedTickets;
 
 
         $ticketsCreatedCount = $user->tickets()->count();
