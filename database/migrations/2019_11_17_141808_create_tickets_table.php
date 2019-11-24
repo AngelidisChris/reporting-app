@@ -23,7 +23,7 @@ class CreateTicketsTable extends Migration
             $table->integer('status');
             $table->integer('priority');
             $table->timestamp('due_date')->nullable();
-            $table->timestamp('tracker');
+            $table->integer('tracker');
             $table->timestamps();
         });
     }

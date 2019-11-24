@@ -173,7 +173,7 @@ class TicketsController extends Controller
     private function validateUpdateRequest()
     {
         return (\request()->validate([
-            'comment' => 'required|max:10000',
+            'comment' => 'required|string|max:10000',
             'priority' => 'required|integer',
             'due_date' => 'date|after_or_equal:today|nullable',
             'tracker' => 'required|integer',

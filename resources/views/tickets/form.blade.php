@@ -2,14 +2,17 @@
 
 {{-- tracker input --}}
 <div class="form-group col-3">
-
     <label class="font-weight-bold col-form-label" >Tracker</label>
     <label style="color: red" for="">*</label>
     <select name="tracker" id="tracker" class="form-control @error('tracker') is-invalid @enderror">
         <option value="" disabled>Select Tracker Type</option>
         @foreach($ticket->trackerOptions() as $activeTrackerKey => $activeTrackerValue)
-            <option value="{{ $activeTrackerKey }}" {{ $ticket->tracker == $activeTrackerValue ? 'selected' : ''}}>{{ $activeTrackerValue }}</option>
-        @endforeach
+            @if( old('tracker') != null && $activeTrackerKey == old('tracker'))
+                <option value="{{$activeTrackerKey}}" selected>{{ $activeTrackerValue }}</option>
+            @else
+                <option value="{{ $activeTrackerKey }}" {{ ($ticket->tracker == $activeTrackerValue && old('tracker') == null) ? 'selected' : ''}}>{{ $activeTrackerValue }}</option>
+            @endif
+         @endforeach
 
     </select>
     @error('tracker')
@@ -78,7 +81,7 @@
                 @if( old('status') != null && $activeStatusKey == old('status'))
                     <option value="{{$activeStatusKey}}" selected>{{ $activeStatusValue }}</option>
                 @else
-                <option value="{{ $activeStatusKey }}" {{ $ticket->status == $activeStatusValue ? 'selected' : ''}}>{{ $activeStatusValue }}</option>
+                <option value="{{ $activeStatusKey }}" {{ ($ticket->status == $activeStatusValue && old('status') == null) ? 'selected' : ''}}>{{ $activeStatusValue }}</option>
                 @endif
             @endforeach
         </select>
@@ -99,7 +102,7 @@
                 @if( old('priority') != null && $activePriorityKey == old('priority'))
                     <option value="{{$activePriorityKey}}" selected>{{ $activePriorityValue }}</option>
                 @else
-                <option value="{{ $activePriorityKey }}" {{ ($ticket->priority == $activePriorityValue) ? 'selected' : ''}}>{{ $activePriorityValue }}</option>
+                <option value="{{ $activePriorityKey }}" {{ ($ticket->priority == $activePriorityValue  && old('priority') == null) ? 'selected' : ''}}>{{ $activePriorityValue }}</option>
                 @endif
             @endforeach
         </select>
@@ -120,9 +123,9 @@
             <option value="" hidden >Select Assignee</option>
             @foreach($users as $user)
                 @if(old('assigned_to') != null && old('assigned_to') == $user->id)
-                    <option value="$user->id" selected>{{ $user->name }}</option>
+                    <option value="{{$user->id}}" selected>{{ $user->name }}</option>
                 @else
-                <option value="{{ $user->id }}" {{ ($ticket->assignedUser) ?  ($user->id == $ticket->assignedUser->id  ? 'selected' : '') : '' }}>{{ $user->name }}</option>
+                <option value="{{ $user->id }}" {{ ($ticket->assignedUser && old('assigned_to') == null) ?  ($user->id == $ticket->assignedUser->id  ? 'selected' : '') : '' }}>{{ $user->name }}</option>
                 @endif
             @endforeach
         </select>
@@ -133,7 +136,7 @@
     <div class="form-group offset-4  col-4">
         <label class="font-weight-bold col-form-label" for="due_date">Due Date</label>
 
-        <input id="due_date"  name="due_date" type="date" value="{{  old('due_date') ?? ($ticket->due_date != null) ? Carbon\Carbon::parse($ticket->getOriginal('due_date'))->format('Y-m-d') : null }}" class="form-control @error('due_date') is-invalid @enderror">
+        <input id="due_date"  name="due_date" type="date" value="{{  old('due_date') ?? (($ticket->due_date != null) ? Carbon\Carbon::parse($ticket->due_date)->format('Y-m-d') : null) }}" class="form-control @error('due_date') is-invalid @enderror">
 
         @error('due_date')
             <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('due_date') }}</strong></span>
