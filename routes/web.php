@@ -29,4 +29,6 @@ Route::delete('/tickets/{ticket}', 'TicketsController@destroy')->name('tickets.d
 Route::post('/tickets/removeAssignee', 'TicketsController@removeAssignee');
 
 // profile routes
-Route::get('/profile/{user}', 'ProfilesController@index')->name('profiles.show');
+Route::get('/profile/{user}', 'ProfilesController@index')->name('profile.show');
+Route::get('/profile/{user}/edit', 'ProfilesController@edit')->name('profile.edit');
+Route::patch('/profile/{user}', 'ProfilesController@update')->name('profile.update');

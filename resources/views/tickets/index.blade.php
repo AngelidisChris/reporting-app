@@ -1,5 +1,27 @@
 @extends('layouts.app')
 
+@section('pagespecificscripts')
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable(
+                {
+                    "order": [[ 4, 'desc' ],],
+                    "columnDefs": [ {
+                        "targets"  : 3,
+                        "orderable": false,
+                        "order": []
+                    }]
+                }
+
+
+            )
+
+        } );
+    </script>
+@endsection
+
 @section('title', 'Ticket List')
 
 @section('content')
@@ -23,44 +45,56 @@
                 <a href="/tickets/create" class="btn btn-primary ml-auto">New Ticket</a>
             </div>
 
-            <div class="" style="background-color: white">
-                <table class="table js-table table-hover">
-                    <thead>
-                    <tr>
-                        <th>@sortablelink('id')</th>
-                        <th>@sortablelink('user_id', 'issuer')</th>
-                        <th>@sortablelink('assigned_to', 'Assignee')</th>
-                        <th width="25%">@sortablelink('title')</th>
-{{--                        <th>@sortablelink('body', 'Subject')</th>--}}
-                        <th>@sortablelink('created_at', 'Created')</th>
-                        <th>@sortablelink('status')</th>
-                        <th>@sortablelink('priority')</th>
-                        <th>@sortablelink('due_date', 'Due Date')</th>
-                        <th>@sortablelink('tracker')</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($tickets as $ticket)
-                            <tr class="table-tr" data-url="/tickets/{{ $ticket->id }}">
-                                <td><a class="" href="/tickets/{{ $ticket->id}}">{{ str_pad($ticket->id,3,'0',STR_PAD_LEFT) }}</a></td>
-                                <td><a href="">{{ $ticket->user->name }}</a></td>
-                                <td><a href="">{{!is_null($ticket->assignedUser) ? $ticket->assignedUser->name : '' }}</a></td>
-                                <td><span title="{{$ticket->title}}">{{ str_limit($ticket->title, 40) }}</span></td>
-{{--                                <td> <span title="{{$ticket->body}}">{{ str_limit($ticket->body, 30) }}</span></td>--}}
-                                <td >{{ ($ticket->created_at)->format('d M Y') }}</td>
-                                <td><span class="box px-2 py-1 font-weight-bold rounded status-level-{{ $ticket->getOriginal('status') }}">{{ $ticket->status }}</span></td>
-                                <td><span class="box px-2 py-1 font-weight-bold rounded priority-level-{{ $ticket->getOriginal('priority') }}">{{ $ticket->priority }}</span></td>
-                                <td >{{ ($ticket->due_date) ?($ticket->due_date)->format('d M Y') : ''}}</td>
-                                <td>{{ $ticket->tracker }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+
         </div>
     </div>
 </div>
 
+<!-- ### $App Screen Content ### -->
+<main class='main-content bgc-grey-100'>
+    <div id='mainContent'>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="bgc-white bd bdrs-3 p-20 mB-20">
+                        <table id="dataTable" class="dataTable table display table-responsive   js-table table-hover text-center" cellspacing="0" width="100%">
+                            <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Issuer</th>
+                                <th>Assignee</th>
+                                <th class="">Subject</th>
+                                {{--                        <th>@sortablelink('body', 'Subject')</th>--}}
+                                <th>Created</th>
+                                <th>Status</th>
+                                <th class="">Priority</th>
+                                <th class="">Due Date</th>
+                                <th>Tracker</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            @foreach($tickets as $ticket)
+                                <tr class="table-tr" data-url="/tickets/{{ $ticket->id }}">
+                                    <td><a class="" href="/tickets/{{ $ticket->id}}">{{ str_pad($ticket->id,3,'0',STR_PAD_LEFT) }}</a></td>
+                                    <td><a href="/profile/{{ $ticket->user_id }}">{{ $ticket->user->name }}</a></td>
+                                    <td><a href="{{ ($ticket->assigned_to) ? '/profile/' . $ticket->assigned_to : ''}}">{{!is_null($ticket->assignedUser) ? $ticket->assignedUser->name : '' }}</a></td>
+                                    <td><span title="{{$ticket->title}}">{{ str_limit($ticket->title, 40) }}</span></td>
+                                    <td >{{ ($ticket->created_at)->format('d/m/y') }}</td>
+                                    <td data-order="{{ $ticket->getOriginal('status') }}"><span class="box px-2 py-1 font-weight-bold rounded status-level-{{ $ticket->getOriginal('status') }}">{{ $ticket->status }}</span></td>
+                                    <td data-order="{{ $ticket->getOriginal('priority') }}" class="text-nowrap"><span class="box px-2 py-1 font-weight-bold rounded priority-level-{{ $ticket->getOriginal('priority') }} ">{{ $ticket->priority }}</span></td>
+                                    <td class="text-nowrap">{{ ($ticket->due_date) ?($ticket->due_date)->format('d M Y') : ''}}</td>
+                                    <td>{{ $ticket->tracker }}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main><!-- ### $App Screen Content ### -->
 @endsection
 
 

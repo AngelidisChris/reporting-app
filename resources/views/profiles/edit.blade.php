@@ -26,30 +26,17 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="description" class="col-md-4 col-form-label text-md-left">Description</label>
-                    <input id="description"
-                           type="text"
-                           class="form-control @error('description') is-invalid @enderror"
-                           name="description" value="{{ old('description') ?? $user->profile->description}}"
+                    <label for="email" class="col-md-4 col-form-label text-md-left">Email</label>
+                    <input id="email"
+                           type="email"
+                           class="form-control @error('email') is-invalid @enderror"
+                           name="email" value="{{ old('email') ?? $user->email}}"
                            autocomplete="on" autofocus>
 
-                    @error('title')
+                    @error('email')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
-                    @enderror
-                </div>
-
-                <div class="form-group row">
-                    <label for="url" class="col-md-4 col-form-label text-md-left">Website/Blog URL</label>
-                    <input id="url"
-                           type="text"
-                           class="form-control @error('url') is-invalid @enderror"
-                           name="url" value="{{ old('url') ?? $user->profile->url}}"
-                           autocomplete="on" autofocus>
-
-                    @error('url')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
+                    </span>
                     @enderror
                 </div>
 

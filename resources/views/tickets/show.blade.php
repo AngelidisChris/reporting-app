@@ -3,7 +3,6 @@
 @section('title', 'Ticket Details')
 @section('content')
 
-
     @if(session()->has('message'))
         <div id="message" class="alert alert-success message" role="alert">
             <strong>{{ session()->get('message') }}</strong>
@@ -30,10 +29,10 @@
     </div>
 
     <div class="row pt-4 border">
-        <div class="col-12">
-            <p class="font-weight-bold">{{ $ticket->title }}</p>
+        <div class="col-10">
+            <h2 class="no-overflow">{{ $ticket->title }}</h2>
             <span>Added by
-                <a href="#">
+                <a href="/profile/{{ $ticket->user->id }}">
                     {{ $ticket->user->name }}
                     {{ $ticket->created_at->diffForHumans() }}.
                 </a>
@@ -73,9 +72,9 @@
             <hr>
         </div>
 
-        <div class="col-11">
+        <div class="col-10">
             <p class="font-weight-bold">Description</p>
-            <p class="">{{ $ticket->body }}</p>
+            <p class="no-overflow">{{ $ticket->body }}</p>
         </div>
 
 
@@ -83,23 +82,22 @@
 
 {{--    // history section--}}
     <div class="history-log row pt-4">
-        <h2>History log</h2>
+        <h2>History</h2>
     </div>
 
     <div class="row">
-
         @foreach($ticket->group_by('created_at', $ticket->revisionHistory) as $history)
-            <div class="col-10 border pt-2 pb-2 mb-3">
+            <div class="col-12 border pt-2 pb-2 mb-3">
                 @if($history[0]->key == 'created_at' && !$history[0]->old_value)
                     <div class="font-weight-bold pl-1">
-                    <span class="">Created by &nbsp;<a href="#">
+                    <span class="">Created by &nbsp;<a href="/profile/{{ $history[0]->userResponsible()->id }}">
                         {{ $history[0]->userResponsible()->name }}
                         &nbsp;{{ \Carbon\Carbon::parse($history[0]->newValue())->diffForHumans() }}</a>
                     </span>
                     </div>
 
                 @else
-                    <span class="font-weight-bold">Updated by &nbsp;<a href="#">
+                    <span class="font-weight-bold">Updated by &nbsp;<a href="/profile/{{ $history[0]->userResponsible()->id }}">
                         {{ $history[0]->userResponsible()->name }}
                         &nbsp;{{ \Carbon\Carbon::parse($history[0]->created_at)->diffForHumans() }}</a>
                     </span>
@@ -110,22 +108,22 @@
                                     @if($his->oldValue() != null && $his->newValue() == null)
                                         <span class="font-weight-bold">{{ $his->fieldName() }}</span>&nbsp; unset &nbsp;
                                         @if($his->fieldName() == 'Assignee')
-                                            <a href=""> {{ $ticket->getTableValues($his->fieldName(), $his->oldValue()) }}</a>
+                                            <a href="/profile/{{ $his->oldValue() }}"> {{ $ticket->getTableValues($his->fieldName(), $his->oldValue()) }}</a>
                                         @else
                                             {{$ticket->getTableValues($his->fieldName(), $his->oldValue())}}
                                         @endif
                                     @elseif($his->oldValue() == null && $his->newValue() != null)
                                         <span class="font-weight-bold">{{ $his->fieldName() }}</span>&nbsp; set to &nbsp;
                                         @if($his->fieldName() == 'Assignee')
-                                            <a href=""> {{$ticket->getTableValues($his->fieldName(), $his->newValue()) }}</a>
+                                            <a href="/profile/{{ $his->newValue() }}"> {{$ticket->getTableValues($his->fieldName(), $his->newValue()) }}</a>
                                         @else
                                             {{$ticket->getTableValues($his->fieldName(), $his->newValue()) }}
                                         @endif
                                     @elseif($his->oldValue() != null && $his->newValue() != null)
                                         <span class="font-weight-bold">{{ $his->fieldName() }}</span>&nbsp; changed from &nbsp;
                                         @if($his->fieldName() == 'Assignee')
-                                            <a href=""> {{ $ticket->getTableValues($his->fieldName(), $his->oldValue()) }} </a>
-                                            &nbsp;to&nbsp;<a href=""> {{ $ticket->getTableValues($his->fieldName(), $his->newValue()) }} </a>
+                                            <a href="/profile/{{ $his->oldValue() }}"> {{ $ticket->getTableValues($his->fieldName(), $his->oldValue()) }} </a>
+                                            &nbsp;to&nbsp;<a href="/profile/{{ $his->newValue() }}"> {{ $ticket->getTableValues($his->fieldName(), $his->newValue()) }} </a>
                                         @else
                                             {{ $ticket->getTableValues($his->fieldName(), $his->oldValue()) }}
                                             &nbsp;to&nbsp;{{ $ticket->getTableValues($his->fieldName(), $his->newValue()) }}
@@ -153,6 +151,7 @@
 
 
 {{--    // remove div if no assignee, else add delete button--}}
+
 @section('pagespecificscripts')
     <!-- flot charts scripts-->
     <script>
