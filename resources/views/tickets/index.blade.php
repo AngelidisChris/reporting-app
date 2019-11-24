@@ -1,5 +1,27 @@
 @extends('layouts.app')
 
+@section('pagespecificscripts')
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable(
+                {
+                    "order": [[ 4, 'desc' ],],
+                    "columnDefs": [ {
+                        "targets"  : 3,
+                        "orderable": false,
+                        "order": []
+                    }]
+                }
+
+
+            )
+
+        } );
+    </script>
+@endsection
+
 @section('title', 'Ticket List')
 
 @section('content')
@@ -73,28 +95,6 @@
         </div>
     </div>
 </main><!-- ### $App Screen Content ### -->
-@endsection
-
-@section('pagespecificscripts')
-    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#dataTable').DataTable(
-                {
-                    "order": [[ 4, 'desc' ],],
-                    "columnDefs": [ {
-                        "targets"  : 3,
-                        "orderable": false,
-                        "order": []
-                    }]
-                }
-
-
-            )
-
-        } );
-    </script>
 @endsection
 
 
