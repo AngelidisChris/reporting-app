@@ -9,7 +9,16 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
-            <ul class="navbar-nav mr-auto">
+            <ul class="navbar-nav pl-5">
+                @auth()
+                    <li class="nav-item">
+                        <a class="nav-link font-weight-bold" href="/tickets">Ticket List</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link font-weight-bold" href="/profile/{{\Illuminate\Support\Facades\Auth::user()->id }}">My Tickets</a>
+                    </li>
+                @endauth
 
             </ul>
             <!-- Right Side Of Navbar -->
@@ -25,6 +34,7 @@
                         </li>
                     @endif
                 @else
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img src="{{ \Illuminate\Support\Facades\Auth::user()->profile->profileImage() }}" width="40" height="40" class="rounded-circle">
