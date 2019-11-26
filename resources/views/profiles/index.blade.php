@@ -2,12 +2,11 @@
 
 
 @section('content')
-<div class="container">
     <div class="row">
-        <div class="col-3 pt-5 pl-5">
+        <div class="col-sm-6 col-md-6 col-lg-4 col-xl-2 pt-5">
             <img src="{{ $user->profile->profileImage() }}" alt="" class="rounded-circle w-100">
         </div>
-        <div class="col-9 pt-5 pl-5">
+        <div class="col-sm-6   pt-5 pl-5">
             <div class="d-flex justify-content-between align-items-baseline">
                 <div class="d-flex align-items-center pb-3">
                     <div class="h1">{{ $user->name }}</div>
@@ -33,7 +32,7 @@
     <hr>
 
     <section id="tabs" class="project-tab">
-        <div class="container">
+
             <div class="row">
                 <div class="col-12">
                     <nav>
@@ -42,9 +41,9 @@
                             <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Tickets Assigned</a>
                         </div>
                         <div class="tab-content" id="nav-tabContent">
-                            <div class="tab-pane fade show active pt-4" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                            <div class="tab-pane table-responsive fade show active pt-4" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                                 @if($ticketsCreatedCount != 0)
-                                <table id="dataTable" class="dataTable display table-responsive table js-table table-hover text-center" cellspacing="0" width="100%">
+                                <table id="dataTable" class="dataTable display table-responsive table js-table table-hover text-center">
                                     <thead>
                                     <tr>
                                         <th>Id</th>
@@ -130,10 +129,8 @@
 
                 </div>
             </div>
-        </div>
     </section>
     <!-- ./Tabs -->
-</div>
 @endsection
 
 @section('pagespecificscripts')
@@ -144,7 +141,16 @@
             $('#dataTable').DataTable(
                 {
                     "order": [[ 3, 'desc' ],],
-                    "columnDefs": [ {
+                    "columnDefs": [
+                        {"width": "5%", "targets": 0},
+                        {"width": "10%", "targets": 1},
+                        {"width": "45%", "targets": 2},
+                        {"width": "10%", "targets": 3},
+                        {"width": "8%", "targets": 4},
+                        {"width": "8%", "targets": 5},
+                        {"width": "8%", "targets": 6},
+                        {"width": "6%", "targets": 7},
+                        {
                         "targets"  : 2,
                         "orderable": false,
                         "order": []
@@ -155,7 +161,16 @@
             $('#dataTable2').DataTable(
                 {
                     "order": [[ 3, 'desc' ],],
-                    "columnDefs": [ {
+                    "columnDefs": [
+                        {"width": "5%", "targets": 0},
+                        {"width": "10%", "targets": 1},
+                        {"width": "45%", "targets": 2},
+                        {"width": "10%", "targets": 3},
+                        {"width": "8%", "targets": 4},
+                        {"width": "8%", "targets": 5},
+                        {"width": "8%", "targets": 6},
+                        {"width": "6%", "targets": 7},
+                        {
                         "targets"  : 2,
                         "orderable": false,
                         "order": []
