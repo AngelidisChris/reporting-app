@@ -10,6 +10,14 @@ body {
     overflow-x: hidden;
 }
 
+#page-content-wrapper {
+    position: relative;
+}
+
+#collapseExample {
+    position: absolute;
+}
+
 #sidebar-wrapper {
     min-height: 100vh;
     margin-left: -15rem;
