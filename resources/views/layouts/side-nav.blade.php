@@ -1,3 +1,4 @@
+@auth()
 <!-- Sidebar -->
 <div class="bg-light border-right " id="sidebar-wrapper">
     <div class="sidebar-heading">Dashboard</div>
@@ -7,5 +8,5 @@
     </div>
 </div>
 <!-- /#sidebar-wrapper -->
-
+@endauth
 
