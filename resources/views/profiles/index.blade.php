@@ -38,7 +38,7 @@
                     <nav>
                         <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
                             <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Tickets Created </a>
-                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Tickets Assigned</a>
+                            <a class="nav-item nav-link adjust_table" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Tickets Assigned</a>
                         </div>
                         <div class="tab-content" id="nav-tabContent">
                             <div class="tab-pane table-responsive fade show active pt-4" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
@@ -85,7 +85,7 @@
 
                             <div class="tab-pane fade table-responsive pt-4" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                                 @if($ticketsAssigned->count() != 0)
-                                    <table id="dataTable2" class="dataTable display table-responsive table js-table table-hover text-center">
+                                    <table id="dataTable2" class="dataTable display table-responsive table js-table table-hover text-center ">
                                         <thead>
                                         <tr>
                                             <th>Id</th>
@@ -104,7 +104,7 @@
                                         <tbody>
                                         @foreach($ticketsAssigned as $ticket)
                                             <tr class="table-tr" data-url="/tickets/{{ $ticket->id }}">
-                                                <td><a class="" href="/tickets/{{ $ticket->id}}">{{ str_pad($ticket->id,3,'0',STR_PAD_LEFT) }}</a></td>
+                                                <td><a href="/tickets/{{ $ticket->id}}">{{ str_pad($ticket->id,3,'0',STR_PAD_LEFT) }}</a></td>
                                                 <td><a href="/profile/{{ $ticket->user_id }}">{{ $ticket->user->name }}</a></td>
 {{--                                                <td><a href="{{ ($ticket->assigned_to) ? '/profile/' . $ticket->assigned_to : ''}}">{{!is_null($ticket->assignedUser) ? $ticket->assignedUser->name : '' }}</a></td>--}}
                                                 <td><span title="{{$ticket->title}}">{{ str_limit($ticket->title, 40) }}</span></td>
@@ -160,6 +160,9 @@
 
             $('#dataTable2').DataTable(
                 {
+                    autoWidth: false, //<---
+                    responsive : true,
+
                     "order": [[ 3, 'desc' ],],
                     "columnDefs": [
                         {"width": "5%", "targets": 0},
@@ -178,5 +181,15 @@
                 }
             )
         } );
+
+
+        window.onresize = function () {
+            $('#dataTable2').DataTable()
+                .columns.adjust()
+                .responsive.recalc();
+        };
+
+
+
     </script>
 @endsection
