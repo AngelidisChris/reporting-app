@@ -1,6 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-
-    <button class="btn" id="menu-toggle"><span class="navbar-toggler-icon"></span></button>
+    @auth()
+        <button class="btn" id="menu-toggle"><span class="navbar-toggler-icon"></span></button>
+    @endauth
         <a class="navbar-brand" href="{{ url('/') }}">
             {{ config('app.name', 'Laravel') }}
         </a>
