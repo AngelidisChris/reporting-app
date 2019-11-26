@@ -49421,6 +49421,11 @@ function removeAssigneeMessage() {
   }, 3000);
 }
 
+$("#menu-toggle").click(function (e) {
+  e.preventDefault();
+  $("#wrapper").toggleClass("toggled");
+});
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
