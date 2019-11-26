@@ -185,8 +185,7 @@
 
         window.onresize = function () {
             $('#dataTable2').DataTable()
-                .columns.adjust()
-                .responsive.recalc();
+                .columns.adjust();
         };
 
 
