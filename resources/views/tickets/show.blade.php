@@ -34,7 +34,7 @@
 
 
     <div class="margin-row px-3 pt-4 border">
-        <div class="col-12 margin-row">
+        <div class="col-12">
             <h2>{{ $ticket->title }}</h2>
         </div>
 
@@ -100,7 +100,7 @@
     </div>
 
 {{--    // history section--}}
-    <div class="history-log margin-row row pt-4">
+    <div class="history-log row pt-4">
         <h2>History</h2>
     </div>
 
