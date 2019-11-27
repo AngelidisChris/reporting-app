@@ -5,7 +5,7 @@
         @csrf
         @method('PATCH')
         <div class="row">
-            <h1>Edit ticket</h1>
+            <h1>Edit profile</h1>
         </div>
         <hr>
         <div class="form-group col-sm-12 col-md-6 margin-row">
