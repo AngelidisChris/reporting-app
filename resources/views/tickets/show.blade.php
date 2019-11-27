@@ -9,75 +9,94 @@
         </div>
     @endif
 
-    <div class="header row d-flex align-items-start pb-2">
-        <h2>{{ $ticket->tracker }}</h2>
+    <div class="row align-items-start pb-2">
+        <div class="d-inline-flex col-sm-12 col-md-6 margin-row">
+            <h2>{{ $ticket->tracker }}</h2>
+            <h2 class="pl-2">#{{ str_pad($ticket->id,3,'0',STR_PAD_LEFT) }}</h2>
+        </div>
 
-        <h2 class="pl-2">#{{ str_pad($ticket->id,3,'0',STR_PAD_LEFT) }}</h2>
-        {{--  use update policy to hide update button   --}}
-        @can('update', $ticket)
-            <a href="/tickets/{{$ticket->id}}/edit" class="btn btn-primary ml-auto mr-3"><i class="fa fa-pencil pr-2"></i>Edit</a>
-        @endcan
+        <div class="d-inline-flex col-sm-12 col-md-6">
+
+            {{--  use update policy to hide update button   --}}
+            @can('update', $ticket)
+                <a href="/tickets/{{$ticket->id}}/edit" class="ml-auto btn btn-primary  mr-3"><i class="fa fa-pencil pr-2"></i>Edit</a>
+            @endcan
             {{--   use delete policy to hide delete button   --}}
             @can('delete', $ticket)
             <form action="/tickets/{{$ticket->id}}" method="post">
                 @method('DELETE')
                 @csrf
-
-                <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure?')"><i class="fa fa-trash-o pr-2"></i>Delete</button>
+                <button class="ml-auto btn btn-danger" type="submit" onclick="return confirm('Are you sure?')"><i class="fa fa-trash-o pr-2"></i>Delete</button>
             </form>
-        @endcan
+        </div>
+    @endcan
     </div>
 
-    <div class="row pt-4 border">
-        <div class="col-10">
-            <h2 class="no-overflow">{{ $ticket->title }}</h2>
-            <span>Added by
-                <a href="/profile/{{ $ticket->user->id }}">
-                    {{ $ticket->user->name }}
-                    {{ $ticket->created_at->diffForHumans() }}.
-                </a>
-                Updated
-                <a href="#">
-                {{ ($ticket->updated_at)->diffForHumans() }}.
-                </a>
-            </span>
+
+    <div class="margin-row px-3 pt-4 border">
+        <div class="col-12 margin-row">
+            <h2>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, cupiditate!</h2>
         </div>
 
-        <div class="col-12">
-            <dl class="row pt-4">
-                <div class="row col-12">
-                    <dt class="col-2">Status:</dt>
-                    <dd class="col-3">{{ $ticket->status }}</dd>
+        <div class="row">
+            <div class="col-sm-12">
 
-                    <dt class="col-2">Start Date:</dt>
-                    <dd class="col-3">{{ ($ticket->created_at)->format('d/M/Y') }}</dd>
-                </div>
-                <div class="row col-12">
-                    <dt class="col-2">Priority:</dt>
-                    <dd class="col-3">{{ $ticket->priority }}</dd>
+                <span>Added by
+                    <a href="/profile/{{ $ticket->user->id }}">
+                        {{ $ticket->user->name }}
+                        {{ $ticket->created_at->diffForHumans() }}.
+                    </a>
+                </span>
+            </div>
+            <div class="col-sm-12">
+                <span>
+                    Updated by
+                    <a href="/profile/{{ $ticket->assignedUser->id }}">
+                    {{ $ticket->assignedUser->name }}
+                    {{ ($ticket->updated_at)->diffForHumans() }}.
+                    </a>
+                </span>
+            </div>
+        </div>
 
-                    <dt class="col-2">Due Date:</dt>
-                    <dd class="col-3">{{ ($ticket->due_date) ? \Carbon\Carbon::parse($ticket->due_date)->format('d/M/Y') : '-'}}</dd>
+        <div class="d-flex">
+            <div class="margin-row pt-4">
+                <div class="col-sm-12 d-inline-flex">
+                    <div class="col-sm-6 d-inline-flex margin-row">
+                        <dt>Status: </dt>&nbsp;
+                        <dd>{{ $ticket->status }}</dd>
+                    </div>
+                    <div class="col-sm-6 d-inline-flex margin-row">
+                        <dt>Start Date: </dt>&nbsp;
+                        <dd>{{ ($ticket->created_at)->format('d/M/Y') }}</dd>
+                    </div>
                 </div>
-                <div class="row col-12">
-                    <dt class="col-2">Assignee:</dt>
-                    <dd class="col-3"><a id="assignee-name" href="">{{($ticket->assignedUser) ? $ticket->assignedUser->name : '' }}</a>
+                <div class="col-sm-12 d-inline-flex">
+                    <div class="col-sm-6 d-inline-flex margin-row">
+                        <dt>Priority:</dt>&nbsp;
+                        <dd>{{ $ticket->priority }}</dd>
+                    </div>
+                    <div class="col-sm-6 d-inline-flex margin-row">
+                        <dt>Due Date:</dt>&nbsp;
+                        <dd>{{ ($ticket->due_date) ? \Carbon\Carbon::parse($ticket->due_date)->format('d/M/Y') : '-'}}</dd>
+                    </div>
+                </div>
+                <div class="col-sm-12 d-inline-flex">
+                    <dt>Assignee:</dt>&nbsp;
+                    <dd><a id="assignee-name" href="">{{($ticket->assignedUser) ? $ticket->assignedUser->name : '' }}</a>
                         @can('update', $ticket)
                             <a href="#" class="remove_assignee" id="remove" assignee-id="{{ $ticket->id }}"> </a>
                         @endcan
                     </dd>
-
                 </div>
-            </dl>
-            <hr>
+
+                <hr>
+                <div class="col-sm-12">
+                    <p class="font-weight-bold">Description</p>
+                    <p class="no-overflow">{{ $ticket->body }}</p>
+                </div>
+            </div>
         </div>
-
-        <div class="col-10">
-            <p class="font-weight-bold">Description</p>
-            <p class="no-overflow">{{ $ticket->body }}</p>
-        </div>
-
-
     </div>
 
 {{--    // history section--}}

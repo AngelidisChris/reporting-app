@@ -1,7 +1,7 @@
 @csrf
 
 {{-- tracker input --}}
-<div class="form-group col-3">
+<div class="form-group col-sm-12 col-md-3">
     <label class="font-weight-bold col-form-label" >Tracker</label>
     <label style="color: red" for="">*</label>
     <select name="tracker" id="tracker" class="form-control @error('tracker') is-invalid @enderror">
@@ -67,9 +67,9 @@
         @enderror
 @endif
 
-<div class="row col-12">
+<div class="row">
     {{-- status input  --}}
-    <div class="form-group col-3">
+    <div class="form-group col-sm-6 col-md-3">
 
         <label class="font-weight-bold col-form-label" >Status</label>
         <label style="color: red" for="">*</label>
@@ -92,7 +92,7 @@
     </div>
 
     {{-- priority input --}}
-    <div class="form-group offset-4 col-3">
+    <div class="form-group offset-md-4 col-sm-6 col-md-3">
 
         <label class="font-weight-bold col-form-label" >Priority</label>
         <label style="color: red" for="">*</label>
@@ -112,10 +112,10 @@
     </div>
 </div>
 
-<div class="row col-12">
+<div class="row">
 
 {{--    set assignee--}}
-    <div class="form-group col-3">
+    <div class="form-group col-sm-6 col-md-3">
         <label class="font-weight-bold col-form-label" >Assignee</label>
 
 
@@ -133,7 +133,7 @@
 
 
     {{-- due date input --}}
-    <div class="form-group offset-4  col-4">
+    <div class="form-group offset-md-4 col-sm-6 col-md-3">
         <label class="font-weight-bold col-form-label" for="due_date">Due Date</label>
 
         <input id="due_date"  name="due_date" type="date" value="{{  old('due_date') ?? (($ticket->due_date != null) ? Carbon\Carbon::parse($ticket->due_date)->format('Y-m-d') : null) }}" class="form-control @error('due_date') is-invalid @enderror">
@@ -150,3 +150,4 @@
 
 
 
+</div>
