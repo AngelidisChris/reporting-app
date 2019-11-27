@@ -100,7 +100,7 @@
     </div>
 
 {{--    // history section--}}
-    <div class="history-log row pt-4">
+    <div class="history-log margin-row row pt-4">
         <h2>History</h2>
     </div>
 
