@@ -48,7 +48,7 @@
         @error('body')
         <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('body') }}</strong></span>
         @enderror
-</div>
+    </div>
 @else
     <div class="form-group col-12">
         <label for="comment" class="font-weight-bold col-form-label">Comment</label>
@@ -65,6 +65,7 @@
         @error('comment')
         <span class="invalid-feedback" role="alert"><strong>{{ $errors->first('comment') }}</strong></span>
         @enderror
+    </div>
 @endif
 
 <div class="row">
@@ -148,6 +149,3 @@
 <input type="hidden" name="token" value=" {{$token}}">
 </div>
 
-
-
-</div>

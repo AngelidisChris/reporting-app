@@ -145,6 +145,16 @@ class Ticket extends Model
         return $grouped;
     }
 
+//    sort revision array of collections by 'created_at' and get latest
+    public function getLatestTicketRevision()
+    {
+        $sorted = $this->revisionHistory->sortByDesc(function ($revision, $key){
+            return $revision['created_at'];
+        });
+
+        return $sorted->first();
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

@@ -28,8 +28,8 @@
                 @csrf
                 <button class="ml-auto btn btn-danger" type="submit" onclick="return confirm('Are you sure?')"><i class="fa fa-trash-o pr-2"></i>Delete</button>
             </form>
+            @endcan
         </div>
-    @endcan
     </div>
 
 
@@ -50,11 +50,13 @@
             </div>
             <div class="col-sm-12">
                 <span>
+                    @if($ticket->revisionHistory)
                     Updated by
-                    <a href="/profile/{{ $ticket->assignedUser->id }}">
-                    {{ $ticket->assignedUser->name }}
+                    <a href="/profile/{{ $ticket->getLatestTicketRevision()['user_id'] }}">
+                    {{ \App\User::where('id', $ticket->getLatestTicketRevision()['user_id'])->first()->name }}
                     {{ ($ticket->updated_at)->diffForHumans() }}.
                     </a>
+                        @endif
                 </span>
             </div>
         </div>
